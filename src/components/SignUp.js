@@ -9,8 +9,47 @@ import {
   Avatar,
   Link,
 } from "@mui/material";
+import { useState } from "react";
+import { signup } from "../services/AuthService";
 
 export default function SignUp() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  async function onSignUp(e) {
+    e.preventDefault();
+
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
+
+    signup(name, email, password)
+      .then((response) => {})
+      .catch((error) => {
+        if (error.response.status === 400) {
+          const data = error.response.data;
+          data.errors.forEach((formError) => {
+            switch (formError.field) {
+              case "name":
+                setNameError(formError.message);
+                break;
+              case "email":
+                setEmailError(formError.message);
+                break;
+              case "password":
+                setPasswordError(formError.message);
+                break;
+              default:
+            }
+          });
+        }
+      });
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -27,7 +66,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={onSignUp} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -37,6 +76,10 @@ export default function SignUp() {
                 name="name"
                 label="Name"
                 autoFocus
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                helperText={nameError}
+                error={nameError !== ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -47,6 +90,10 @@ export default function SignUp() {
                 name="email"
                 label="Email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                helperText={emailError}
+                error={emailError !== ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -58,6 +105,10 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                helperText={passwordError}
+                error={passwordError !== ""}
               />
             </Grid>
           </Grid>
