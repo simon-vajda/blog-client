@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { signup } from "../services/AuthService";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -20,6 +21,8 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const navigate = useNavigate();
+
   async function onSignUp(e) {
     e.preventDefault();
 
@@ -28,7 +31,9 @@ export default function SignUp() {
     setPasswordError("");
 
     signup(name, email, password)
-      .then((response) => {})
+      .then((response) => {
+        navigate("/login", { state: { signupSuccess: true } });
+      })
       .catch((error) => {
         if (error.response.status === 400) {
           const data = error.response.data;
@@ -122,7 +127,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/login" variant="body2" component={NavLink}>
                 Already have an account? Sign in
               </Link>
             </Grid>
