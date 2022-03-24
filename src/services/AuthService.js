@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/v1/auth/";
+const API_URL =
+  window.location.protocol +
+  "//" +
+  window.location.hostname +
+  ":8080/api/v1/auth/";
 
 export function signup(name, email, password) {
   return axios.post(API_URL + "signup", {
@@ -16,7 +20,7 @@ export async function login(email, password) {
     password,
   });
 
-  if (response.data.jwt) {
+  if (response.data.token) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
 
