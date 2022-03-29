@@ -11,12 +11,16 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { useState } from "react";
-import { login } from "../services/AuthService";
-import { NavLink, useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+import axios from "axios";
+import { API_URL } from "../App";
 
 export default function Login() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +28,13 @@ export default function Login() {
   const [showSuccess, setShowSuccess] = useState(
     location.state != null && location.state.signupSuccess != null
   );
+
+  // this page is only accessible if the user is not logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser]);
 
   function handleSnackbarClose(event, reason) {
     if (reason === "clickaway") return;
@@ -35,10 +46,17 @@ export default function Login() {
 
     setLoginError(false);
 
-    login(email, password)
-      .then((response) => {})
+    axios
+      .post(API_URL + "/auth/login", {
+        email,
+        password,
+      })
+      .then((response) => {
+        setCurrentUser(response.data);
+        navigate("/");
+      })
       .catch((error) => {
-        if (error.response.status === 403) {
+        if (error.response.status === 401) {
           setLoginError(true);
         }
       });

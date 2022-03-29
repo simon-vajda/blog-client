@@ -9,9 +9,11 @@ import {
   Avatar,
   Link,
 } from "@mui/material";
-import { useState } from "react";
-import { signup } from "../services/AuthService";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_URL } from "../App";
+import { UserContext } from "../UserContext";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -22,6 +24,14 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  // this page is only accessible if the user is not logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser]);
 
   async function onSignUp(e) {
     e.preventDefault();
@@ -30,7 +40,12 @@ export default function SignUp() {
     setEmailError("");
     setPasswordError("");
 
-    signup(name, email, password)
+    axios
+      .post(API_URL + "/auth/signup", {
+        name,
+        email,
+        password,
+      })
       .then((response) => {
         navigate("/login", { state: { signupSuccess: true } });
       })
