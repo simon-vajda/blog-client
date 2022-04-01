@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import axios from "axios";
-import { API_URL } from "../App";
+import { API_URL } from "../ApiConfig";
 
 export default function Login() {
   const location = useLocation();

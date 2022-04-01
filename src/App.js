@@ -4,8 +4,7 @@ import Login from "./components/Login";
 import { Layout } from "./components/Layout";
 import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
-
-export const API_URL = "http://localhost:8080/api/v1";
+import CreatePost from "./components/CreatePost";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(getUserFromStorage());
@@ -22,6 +21,7 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<Login></Login>} />
             <Route path="/signup" element={<SignUp></SignUp>} />
+            <Route path="/create" element={<CreatePost></CreatePost>} />
           </Routes>
         </Layout>
       </BrowserRouter>
