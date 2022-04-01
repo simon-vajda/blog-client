@@ -5,6 +5,7 @@ import { Layout } from "./components/Layout";
 import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import CreatePost from "./components/CreatePost";
+import PostList from "./components/PostList";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(getUserFromStorage());
@@ -19,6 +20,7 @@ export default function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
+            <Route path="/" element={<PostList />} />
             <Route path="/login" element={<Login></Login>} />
             <Route path="/signup" element={<SignUp></SignUp>} />
             <Route path="/create" element={<CreatePost></CreatePost>} />
