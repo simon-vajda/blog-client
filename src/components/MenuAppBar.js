@@ -3,6 +3,7 @@ import {
   AppBar,
   Button,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -33,9 +34,16 @@ export default function MenuAppBar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Link
+          to="/"
+          variant="h6"
+          color="inherit"
+          underline="hover"
+          component={NavLink}
+          sx={{ flexGrow: 1 }}
+        >
           Blog
-        </Typography>
+        </Link>
         {currentUser ? (
           <div>
             <IconButton
