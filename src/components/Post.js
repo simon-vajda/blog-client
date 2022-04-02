@@ -46,7 +46,6 @@ export default function Post({ post, preview }) {
           </Box>
         )}
       </Stack>
-      <Divider />
     </Box>
   );
 }

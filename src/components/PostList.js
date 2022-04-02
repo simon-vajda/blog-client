@@ -1,4 +1,11 @@
-import { Container, Fab, Stack } from "@mui/material";
+import {
+  CircularProgress,
+  Container,
+  Divider,
+  Fab,
+  Fade,
+  Stack,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -6,6 +13,7 @@ import axios from "axios";
 import { API_URL, headers } from "../ApiConfig";
 import { UserContext } from "../UserContext";
 import Post from "./Post";
+import { Box } from "@mui/system";
 
 export default function PostList() {
   const navigate = useNavigate();
@@ -18,7 +26,7 @@ export default function PostList() {
 
   useEffect(() => {
     axios
-      .get(API_URL + "/post", { headers: headers(currentUser.token) })
+      .get(API_URL + "/post", { headers: headers(currentUser) })
       .then((response) => {
         setPageNumber(response.data.pageNumber);
         setTotalPages(response.data.totalPages);
@@ -46,7 +54,7 @@ export default function PostList() {
       >
         <AddIcon />
       </Fab>
-      <Stack spacing={1} mt={2} mb={4}>
+      <Stack spacing={1} divider={<Divider />} mt={2} mb={4}>
         {posts.map((post) => (
           <Post post={post} preview={true}></Post>
         ))}

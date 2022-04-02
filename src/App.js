@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
+import PostPage from "./components/PostPage";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(getUserFromStorage());
@@ -20,10 +21,11 @@ export default function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<PostList />} />
-            <Route path="/login" element={<Login></Login>} />
-            <Route path="/signup" element={<SignUp></SignUp>} />
-            <Route path="/create" element={<CreatePost></CreatePost>} />
+            <Route exact path="/" element={<PostList />} />
+            <Route exact path="/login" element={<Login></Login>} />
+            <Route exact path="/signup" element={<SignUp></SignUp>} />
+            <Route exact path="/create" element={<CreatePost></CreatePost>} />
+            <Route exact path="/post/:id" element={<PostPage></PostPage>} />
           </Routes>
         </Layout>
       </BrowserRouter>
