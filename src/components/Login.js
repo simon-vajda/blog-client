@@ -53,7 +53,8 @@ export default function Login() {
       })
       .then((response) => {
         setCurrentUser(response.data);
-        navigate("/");
+        const fromUrl = location.state != null ? location.state.fromUrl : "/";
+        navigate(fromUrl);
       })
       .catch((error) => {
         if (error.response.status === 401) {

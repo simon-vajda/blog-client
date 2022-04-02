@@ -15,7 +15,7 @@ export default function CreatePost() {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate("/login", { state: { fromUrl: "/create" } });
     }
   }, [currentUser, navigate]);
 
@@ -34,7 +34,7 @@ export default function CreatePost() {
       .catch((error) => {
         if (error.response.status === 401) {
           setCurrentUser(null);
-          navigate("/login");
+          navigate("/login", { state: { fromUrl: "/create" } });
         }
       });
   }

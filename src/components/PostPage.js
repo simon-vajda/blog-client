@@ -22,7 +22,7 @@ export default function PostPage() {
       .catch((error) => {
         if (error.response.status === 401) {
           setCurrentUser(null);
-          navigate("/login");
+          navigate("/login", { state: { fromUrl: `/post/${id}` } });
         }
       });
   }, []);
