@@ -1,6 +1,7 @@
 import { AccountCircle } from "@mui/icons-material";
 import {
   AppBar,
+  Box,
   Button,
   IconButton,
   Link,
@@ -28,22 +29,25 @@ export default function MenuAppBar() {
 
   const handleLogout = () => {
     setCurrentUser(null);
+    setAnchorEl(null);
     navigate("/login");
   };
 
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link
-          to="/"
-          variant="h6"
-          color="inherit"
-          underline="hover"
-          component={NavLink}
-          sx={{ flexGrow: 1 }}
-        >
-          Blog
-        </Link>
+        <Box sx={{ flexGrow: 1 }}>
+          <Link
+            to="/"
+            variant="h6"
+            display="inline"
+            color="inherit"
+            underline="hover"
+            component={NavLink}
+          >
+            Blog
+          </Link>
+        </Box>
         {currentUser ? (
           <div>
             <IconButton
@@ -54,6 +58,7 @@ export default function MenuAppBar() {
               onClick={handleMenu}
               color="inherit"
             >
+              <Typography mr={1}>{currentUser.name}</Typography>
               <AccountCircle />
             </IconButton>
             <Menu
