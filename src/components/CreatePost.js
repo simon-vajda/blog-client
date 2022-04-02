@@ -26,7 +26,7 @@ export default function CreatePost() {
       .post(
         API_URL + "/post",
         { title, content },
-        { headers: headers(currentUser.token) }
+        { headers: headers(currentUser) }
       )
       .then(() => {
         navigate("/");
