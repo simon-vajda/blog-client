@@ -5,12 +5,13 @@ import {
   Typography,
   Grid,
   TextField,
-  Button,
-  Avatar,
-  Link,
   Snackbar,
   Alert,
+  Link,
+  Avatar,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import LoginIcon from "@mui/icons-material/Login";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
@@ -28,6 +29,7 @@ export default function Login() {
   const [showSuccess, setShowSuccess] = useState(
     location.state != null && location.state.signupSuccess != null
   );
+  const [loading, setLoading] = useState(false);
 
   // this page is only accessible if the user is not logged in
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function Login() {
     e.preventDefault();
 
     setLoginError(false);
+    setLoading(true);
 
     axios
       .post(API_URL + "/auth/login", {
@@ -52,11 +55,13 @@ export default function Login() {
         password,
       })
       .then((response) => {
+        setLoading(false);
         setCurrentUser(response.data);
         const fromUrl = location.state != null ? location.state.fromUrl : "/";
         navigate(fromUrl);
       })
       .catch((error) => {
+        setLoading(false);
         if (error.response.status === 401) {
           setLoginError(true);
         }
@@ -84,6 +89,7 @@ export default function Login() {
             <Grid item xs={12}>
               <TextField
                 required
+                autoFocus
                 fullWidth
                 id="email"
                 name="email"
@@ -115,9 +121,17 @@ export default function Login() {
           >
             Wrong credentials
           </Typography>
-          <Button type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
+          <LoadingButton
+            type="submit"
+            loading={loading}
+            fullWidth
+            variant="contained"
+            endIcon={<LoginIcon />}
+            loadingPosition="end"
+            sx={{ mb: 2 }}
+          >
             Login
-          </Button>
+          </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to="/signup" variant="body2" component={NavLink}>

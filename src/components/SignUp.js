@@ -5,15 +5,16 @@ import {
   Typography,
   Grid,
   TextField,
-  Button,
   Avatar,
   Link,
 } from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../ApiConfig";
 import { UserContext } from "../UserContext";
+import { LoadingButton } from "@mui/lab";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -22,6 +23,7 @@ export default function SignUp() {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -39,6 +41,7 @@ export default function SignUp() {
     setNameError("");
     setEmailError("");
     setPasswordError("");
+    setLoading(true);
 
     axios
       .post(API_URL + "/auth/signup", {
@@ -47,9 +50,11 @@ export default function SignUp() {
         password,
       })
       .then((response) => {
+        setLoading(false);
         navigate("/login", { state: { signupSuccess: true } });
       })
       .catch((error) => {
+        setLoading(false);
         if (error.response.status === 400) {
           const data = error.response.data;
           data.errors.forEach((formError) => {
@@ -132,14 +137,17 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
+          <LoadingButton
             type="submit"
+            loading={loading}
             fullWidth
             variant="contained"
+            endIcon={<PersonAddIcon />}
+            loadingPosition="end"
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to="/login" variant="body2" component={NavLink}>

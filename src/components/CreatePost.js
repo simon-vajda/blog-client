@@ -1,14 +1,16 @@
-import { Button, Container, Stack, TextField } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Stack, TextField } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL, headers } from "../ApiConfig";
 import { UserContext } from "../UserContext";
+import { LoadingButton } from "@mui/lab";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ export default function CreatePost() {
 
   function onPost(e) {
     e.preventDefault();
+    setLoading(true);
 
     axios
       .post(
@@ -29,9 +32,11 @@ export default function CreatePost() {
         { headers: headers(currentUser) }
       )
       .then(() => {
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
+        setLoading(false);
         if (error.response.status === 401) {
           setCurrentUser(null);
           navigate("/login", { state: { fromUrl: "/create" } });
@@ -63,9 +68,16 @@ export default function CreatePost() {
           onChange={(e) => setContent(e.target.value)}
         />
 
-        <Button type="submit" variant="contained" color="primary">
+        <LoadingButton
+          type="submit"
+          loading={loading}
+          fullWidth
+          variant="contained"
+          endIcon={<SendIcon />}
+          loadingPosition="end"
+        >
           Post
-        </Button>
+        </LoadingButton>
       </Stack>
     </Container>
   );
