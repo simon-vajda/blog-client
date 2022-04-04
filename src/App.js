@@ -4,9 +4,9 @@ import Login from "./components/Login";
 import { Layout } from "./components/Layout";
 import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
-import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
 import PostPage from "./components/PostPage";
+import PostEditor from "./components/PostEditor";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(getUserFromStorage());
@@ -24,8 +24,13 @@ export default function App() {
             <Route exact path="/" element={<PostList />} />
             <Route exact path="/login" element={<Login></Login>} />
             <Route exact path="/signup" element={<SignUp></SignUp>} />
-            <Route exact path="/create" element={<CreatePost></CreatePost>} />
+            <Route exact path="/create" element={<PostEditor></PostEditor>} />
             <Route exact path="/post/:id" element={<PostPage></PostPage>} />
+            <Route
+              exact
+              path="/post/:id/edit"
+              element={<PostEditor></PostEditor>}
+            />
           </Routes>
         </Layout>
       </BrowserRouter>

@@ -26,6 +26,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
 import { API_URL, headers } from "../ApiConfig";
 
+export const hasEditPermission = (user, post) =>
+  user && (user.id === post.author.id || user.roles.includes("ROLE_ADMIN"));
+
 export default function Post({ post, preview }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const optionsOpen = Boolean(anchorEl);
@@ -46,9 +49,6 @@ export default function Post({ post, preview }) {
     };
     return date.toLocaleString("en-UK", options);
   };
-
-  const hasEditPermission = (user) =>
-    user && (user.id === post.author.id || user.roles.includes("ROLE_ADMIN"));
 
   const onOptionsClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -98,7 +98,7 @@ export default function Post({ post, preview }) {
               <CircularProgress size={20} />
             </Fade>
           </Box>
-          {!preview && hasEditPermission(currentUser) && (
+          {!preview && hasEditPermission(currentUser, post) && (
             <Box>
               <IconButton
                 id="options-button"
@@ -122,7 +122,11 @@ export default function Post({ post, preview }) {
                   <ListItemIcon>
                     <EditIcon fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText>Edit</ListItemText>
+                  <ListItemText
+                    onClick={() => navigate(`/post/${post.id}/edit`)}
+                  >
+                    Edit
+                  </ListItemText>
                 </MenuItem>
                 <MenuItem onClick={() => setDeleteDialogOpen(true)}>
                   <ListItemIcon>

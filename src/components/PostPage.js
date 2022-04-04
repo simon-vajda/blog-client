@@ -20,13 +20,14 @@ export default function PostPage() {
       .then((response) => {
         setLoading(false);
         setPost(response.data);
-        console.log(post);
       })
       .catch((error) => {
         setLoading(false);
         if (error.response.status === 401) {
           setCurrentUser(null);
           navigate("/login", { state: { fromUrl: `/post/${id}` } });
+        } else if (error.response.status === 404) {
+          navigate("/");
         }
       });
   }, []);

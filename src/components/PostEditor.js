@@ -2,44 +2,79 @@ import { Container, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { API_URL, headers } from "../ApiConfig";
 import { UserContext } from "../UserContext";
 import { LoadingButton } from "@mui/lab";
+import { hasEditPermission } from "./Post";
 
-export default function CreatePost() {
+export default function PostEditor() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { id } = useParams();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login", { state: { fromUrl: "/create" } });
+      navigate("/login", { state: { fromUrl: location.pathname } });
     }
-  }, [currentUser, navigate]);
 
-  function onPost(e) {
-    e.preventDefault();
+    if (id === undefined) return;
+
     setLoading(true);
-
     axios
-      .post(
-        API_URL + "/post",
-        { title, content },
-        { headers: headers(currentUser) }
-      )
-      .then(() => {
+      .get(API_URL + `/post/${id}`, { headers: headers(currentUser) })
+      .then((response) => {
         setLoading(false);
-        navigate("/");
+        setTitle(response.data.title);
+        setContent(response.data.content);
+
+        if (!hasEditPermission(currentUser, response.data)) {
+          navigate(`/post/${id}`);
+        }
       })
       .catch((error) => {
         setLoading(false);
         if (error.response.status === 401) {
           setCurrentUser(null);
-          navigate("/login", { state: { fromUrl: "/create" } });
+          navigate("/login", { state: { fromUrl: location.pathname } });
+        } else if ((error.response.status = 403)) {
+          navigate("/");
+        } else if (error.response.status === 404) {
+          navigate("/");
+        }
+      });
+  }, []);
+
+  function onPost(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const path = id ? `/post/${id}` : "/post";
+    const method = id ? "put" : "post";
+    const successUrl = id ? `/post/${id}` : "/";
+
+    axios
+      .request({
+        method: method,
+        baseURL: API_URL,
+        url: path,
+        data: { title, content },
+        headers: headers(currentUser),
+      })
+      .then(() => {
+        setLoading(false);
+        navigate(successUrl);
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response.status === 401) {
+          setCurrentUser(null);
+          navigate("/login", { state: { fromUrl: location.pathname } });
         }
       });
   }
@@ -76,7 +111,7 @@ export default function CreatePost() {
           endIcon={<SendIcon />}
           loadingPosition="end"
         >
-          Post
+          {id ? "Update" : "Post"}
         </LoadingButton>
       </Stack>
     </Container>
