@@ -60,7 +60,7 @@ export default function PostList() {
       </Fab>
       <Stack spacing={1} divider={<Divider />} mt={2} mb={4}>
         {posts.map((post) => (
-          <Post post={post} preview={true}></Post>
+          <Post key={post.id} post={post} preview={true}></Post>
         ))}
         <Box
           sx={{
