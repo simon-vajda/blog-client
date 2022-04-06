@@ -168,7 +168,12 @@ export default function Post({ post, preview }) {
             ? "Created on " + localDateFormat(post.createdOn)
             : "Updated on " + localDateFormat(post.updatedOn)}
         </Typography>
-        <Typography variant="body1" mt={2} textAlign="justify">
+        <Typography
+          variant="body1"
+          mt={2}
+          textAlign="justify"
+          whiteSpace="pre-line"
+        >
           {preview && post.content.length > 800
             ? post.content.substring(0, 800) + "..."
             : post.content}
