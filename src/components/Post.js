@@ -55,6 +55,8 @@ export default function Post({ post, preview }) {
   };
 
   const handleDelete = () => {
+    setAnchorEl(null);
+
     setDeleteDialogOpen(false);
     setLoading(true);
 
@@ -71,6 +73,11 @@ export default function Post({ post, preview }) {
           navigate("/login");
         }
       });
+  };
+
+  const handleEdit = () => {
+    setAnchorEl(null);
+    navigate(`/post/${post.id}/edit`);
   };
 
   return (
@@ -118,15 +125,11 @@ export default function Post({ post, preview }) {
                   "aria-labelledby": "options-button",
                 }}
               >
-                <MenuItem>
+                <MenuItem onClick={handleEdit}>
                   <ListItemIcon>
                     <EditIcon fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText
-                    onClick={() => navigate(`/post/${post.id}/edit`)}
-                  >
-                    Edit
-                  </ListItemText>
+                  <ListItemText>Edit</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={() => setDeleteDialogOpen(true)}>
                   <ListItemIcon>
