@@ -13,7 +13,7 @@ This is a fullstack blog web application using the following technologies:
 ### Functionality
 
 - Login and Registration (form validation)
-- Listing all posts (with pagination and lazy loading)
+- Listing all posts (with pagination and infinite scroll)
 - Create, Edit, Delete posts
 - User permissions
   - Every action requires a logged in user, except for viewing posts
