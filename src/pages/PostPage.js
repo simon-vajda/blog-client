@@ -2,9 +2,9 @@ import { Box, CircularProgress, Container, Fade } from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_URL, headers } from "../ApiConfig";
-import { UserContext } from "../UserContext";
-import Post from "./Post";
+import { API_URL, headers } from "../utils/ApiConfig";
+import { UserContext } from "../utils/UserContext";
+import Post from "../components/Post";
 
 export default function PostPage() {
   const navigate = useNavigate();

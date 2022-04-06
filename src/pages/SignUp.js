@@ -5,31 +5,28 @@ import {
   Typography,
   Grid,
   TextField,
-  Snackbar,
-  Alert,
-  Link,
   Avatar,
+  Link,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
-import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../ApiConfig";
+import { API_URL } from "../utils/ApiConfig";
+import { UserContext } from "../utils/UserContext";
+import { LoadingButton } from "@mui/lab";
 
-export default function Login() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-
+export default function SignUp() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(
-    location.state != null && location.state.signupSuccess != null
-  );
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   // this page is only accessible if the user is not logged in
   useEffect(() => {
@@ -38,32 +35,42 @@ export default function Login() {
     }
   }, [currentUser]);
 
-  function handleSnackbarClose(event, reason) {
-    if (reason === "clickaway") return;
-    setShowSuccess(false);
-  }
-
-  function onLogin(e) {
+  async function onSignUp(e) {
     e.preventDefault();
 
-    setLoginError(false);
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
     setLoading(true);
 
     axios
-      .post(API_URL + "/auth/login", {
+      .post(API_URL + "/auth/signup", {
+        name,
         email,
         password,
       })
       .then((response) => {
         setLoading(false);
-        setCurrentUser(response.data);
-        const fromUrl = location.state != null ? location.state.fromUrl : "/";
-        navigate(fromUrl);
+        navigate("/login", { state: { signupSuccess: true } });
       })
       .catch((error) => {
         setLoading(false);
-        if (error.response.status === 401) {
-          setLoginError(true);
+        if (error.response.status === 400) {
+          const data = error.response.data;
+          data.errors.forEach((formError) => {
+            switch (formError.field) {
+              case "name":
+                setNameError(formError.message);
+                break;
+              case "email":
+                setEmailError(formError.message);
+                break;
+              case "password":
+                setPasswordError(formError.message);
+                break;
+              default:
+            }
+          });
         }
       });
   }
@@ -82,14 +89,27 @@ export default function Login() {
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Login
+          Sign up
         </Typography>
-        <Box component="form" onSubmit={onLogin} sx={{ mt: 3 }}>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Box component="form" onSubmit={onSignUp} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 required
+                fullWidth
+                id="name"
+                name="name"
+                label="Name"
                 autoFocus
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                helperText={nameError}
+                error={nameError !== ""}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
                 fullWidth
                 id="email"
                 name="email"
@@ -97,6 +117,8 @@ export default function Login() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                helperText={emailError}
+                error={emailError !== ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,50 +132,31 @@ export default function Login() {
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                helperText={passwordError}
+                error={passwordError !== ""}
               />
             </Grid>
           </Grid>
-          <Typography
-            sx={{ mb: 1 }}
-            align="center"
-            color="error.main"
-            display={loginError ? "inherit" : "none"}
-          >
-            Wrong credentials
-          </Typography>
           <LoadingButton
             type="submit"
             loading={loading}
             fullWidth
             variant="contained"
-            endIcon={<LoginIcon />}
+            endIcon={<PersonAddIcon />}
             loadingPosition="end"
-            sx={{ mb: 2 }}
+            sx={{ mt: 3, mb: 2 }}
           >
-            Login
+            Sign Up
           </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/signup" variant="body2" component={NavLink}>
-                Don't have an account? Sign Up
+              <Link to="/login" variant="body2" component={NavLink}>
+                Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      <Snackbar
-        open={showSuccess}
-        onClose={handleSnackbarClose}
-        autoHideDuration={5000}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Registration successful
-        </Alert>
-      </Snackbar>
     </Container>
   );
 }

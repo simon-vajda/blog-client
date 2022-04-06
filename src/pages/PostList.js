@@ -10,9 +10,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { API_URL, headers } from "../ApiConfig";
-import { UserContext } from "../UserContext";
-import Post from "./Post";
+import { API_URL, headers } from "../utils/ApiConfig";
+import { UserContext } from "../utils/UserContext";
+import Post from "../components/Post";
 import { Box } from "@mui/system";
 
 export default function PostList() {

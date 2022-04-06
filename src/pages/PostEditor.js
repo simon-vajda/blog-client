@@ -3,10 +3,10 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { API_URL, headers } from "../ApiConfig";
-import { UserContext } from "../UserContext";
+import { API_URL, headers } from "../utils/ApiConfig";
+import { UserContext } from "../utils/UserContext";
 import { LoadingButton } from "@mui/lab";
-import { hasEditPermission } from "./Post";
+import { hasEditPermission } from "../components/Post";
 
 export default function PostEditor() {
   const [title, setTitle] = useState("");

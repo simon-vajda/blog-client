@@ -19,12 +19,12 @@ import {
 import { Box } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../utils/UserContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
-import { API_URL, headers } from "../ApiConfig";
+import { API_URL, headers } from "../utils/ApiConfig";
 
 export const hasEditPermission = (user, post) =>
   user && (user.id === post.author.id || user.roles.includes("ROLE_ADMIN"));

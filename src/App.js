@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import { Layout } from "./components/Layout";
 import { useEffect, useState } from "react";
-import { UserContext } from "./UserContext";
-import PostList from "./components/PostList";
-import PostPage from "./components/PostPage";
-import PostEditor from "./components/PostEditor";
+import { UserContext } from "./utils/UserContext";
+import PostList from "./pages/PostList";
+import PostPage from "./pages/PostPage";
+import PostEditor from "./pages/PostEditor";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(getUserFromStorage());

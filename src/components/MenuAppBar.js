@@ -15,7 +15,7 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../utils/UserContext";
 import HideOnScroll from "./HideOnScroll";
 
 export default function MenuAppBar() {
