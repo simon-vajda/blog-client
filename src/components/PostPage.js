@@ -33,7 +33,7 @@ export default function PostPage() {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 2, mb: 3 }}>
+    <Container maxWidth="md" sx={{ pt: 2, pb: 2 }}>
       {post && <Post post={post} preview={false}></Post>}
       <Box
         sx={{

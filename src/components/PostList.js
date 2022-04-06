@@ -71,7 +71,7 @@ export default function PostList() {
   }, [pageNumber]);
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="md" sx={{ pt: 2, pb: 2 }}>
       <Fab
         color="secondary"
         aria-label="add"
@@ -84,7 +84,7 @@ export default function PostList() {
       >
         <AddIcon />
       </Fab>
-      <Stack spacing={1} divider={<Divider />} mt={2} mb={4}>
+      <Stack spacing={1} divider={<Divider />}>
         {posts.map((post, index) => {
           if (index === posts.length - 1) {
             return (
