@@ -59,7 +59,7 @@ export default function CommentList({ post }) {
     }
   }, [pageNumber, totalPages]);
 
-  const handleNewComment = (newComment) => {
+  const reloadComments = () => {
     if (pageNumber === 1) {
       fetchComments(1);
     } else {
@@ -67,21 +67,38 @@ export default function CommentList({ post }) {
     }
   };
 
+  const handleCommentEdit = (comment) => {
+    const updatedComments = [
+      comment,
+      ...comments.filter((c) => c.id !== comment.id),
+    ];
+    setComments(updatedComments);
+  };
+
   return (
     <Box>
-      <CommentEditor post={post} onSuccess={handleNewComment}></CommentEditor>
+      <CommentEditor post={post} onSuccess={reloadComments}></CommentEditor>
       <Stack spacing={2} mt={2}>
         {comments.map((comment, index) => {
           if (index === comments.length - 1) {
             return (
               <div key={comment.id} ref={lastCommentElementRef}>
-                <Comment comment={comment} />
+                <Comment
+                  comment={comment}
+                  post={post}
+                  onDelete={reloadComments}
+                />
               </div>
             );
           } else {
             return (
               <div key={comment.id}>
-                <Comment comment={comment} />
+                <Comment
+                  comment={comment}
+                  post={post}
+                  onDelete={reloadComments}
+                  onEdit={handleCommentEdit}
+                />
               </div>
             );
           }

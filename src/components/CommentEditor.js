@@ -7,13 +7,31 @@ import { API_URL, headers } from "../utils/ApiConfig";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function CommentEditor({ post, onSuccess }) {
+export default function CommentEditor({
+  post,
+  comment,
+  onSuccess,
+  onCancel,
+  sx,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  const label = currentUser
+    ? comment
+      ? "Edit comment"
+      : "New comment"
+    : "Log in to join the discussion";
+
+  useEffect(() => {
+    if (comment) {
+      setContent(comment.content);
+    }
+  }, []);
 
   useEffect(() => {
     if (!currentUser) {
@@ -25,14 +43,17 @@ export default function CommentEditor({ post, onSuccess }) {
     e.preventDefault();
     setLoading(true);
 
-    const path = "/comment";
+    const path = comment ? `/comment/${comment.id}` : "/comment";
+    const method = comment ? "put" : "post";
 
     axios
-      .post(
-        API_URL + path,
-        { content: content, postId: post.id },
-        { headers: headers(currentUser) }
-      )
+      .request({
+        method: method,
+        baseURL: API_URL,
+        url: path,
+        data: { content: content, postId: post.id },
+        headers: headers(currentUser),
+      })
       .then((response) => {
         setLoading(false);
         setContent("");
@@ -48,11 +69,11 @@ export default function CommentEditor({ post, onSuccess }) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <Box component="form" onSubmit={handleSubmit} sx={sx}>
       <TextField
         id="comment"
         name="comment"
-        label={currentUser ? "New comment" : "Log in to join the discussion"}
+        label={label}
         required
         multiline
         maxRows={8}
@@ -67,6 +88,11 @@ export default function CommentEditor({ post, onSuccess }) {
         justifyContent="end"
         sx={{ mt: 1 }}
       >
+        {comment && (
+          <Button sx={{ mr: 1 }} onClick={onCancel} variant="text">
+            Cancel
+          </Button>
+        )}
         <LoadingButton
           type="submit"
           loading={loading}
@@ -75,7 +101,7 @@ export default function CommentEditor({ post, onSuccess }) {
           loadingPosition="end"
           disabled={!content}
         >
-          Post
+          {comment ? "Update" : "Post"}
         </LoadingButton>
       </Box>
     </Box>
