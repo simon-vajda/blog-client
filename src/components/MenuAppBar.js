@@ -34,7 +34,6 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     setCurrentUser(null);
     setAnchorEl(null);
-    navigate("/login");
   };
 
   return (

@@ -22,7 +22,9 @@ export default function PostEditor() {
     if (!currentUser) {
       navigate("/login", { state: { fromUrl: location.pathname } });
     }
+  }, [currentUser]);
 
+  useEffect(() => {
     if (id === undefined) return;
 
     setLoading(true);
