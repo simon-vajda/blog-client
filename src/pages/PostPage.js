@@ -64,7 +64,7 @@ export default function PostPage() {
           <Typography variant="h5" sx={{ mb: 2 }}>
             Comments
           </Typography>
-          <CommentEditor></CommentEditor>
+          <CommentEditor post={post} onSubmit={() => {}}></CommentEditor>
         </Box>
       )}
     </Container>
