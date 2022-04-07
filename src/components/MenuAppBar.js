@@ -14,12 +14,13 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useContext, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/UserContext";
 import HideOnScroll from "./HideOnScroll";
 
 export default function MenuAppBar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -34,6 +35,10 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     setCurrentUser(null);
     setAnchorEl(null);
+  };
+
+  const goToLogin = () => {
+    navigate("/login", { state: { fromUrl: location.pathname } });
   };
 
   return (
@@ -89,7 +94,7 @@ export default function MenuAppBar() {
               </Menu>
             </div>
           ) : (
-            <Button color="inherit" component={NavLink} to="/login">
+            <Button color="inherit" onClick={goToLogin}>
               Login
             </Button>
           )}
