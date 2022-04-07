@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { API_URL, headers } from "../utils/ApiConfig";
 import { UserContext } from "../utils/UserContext";
 import Post from "../components/Post";
-import CommentEditor from "../components/CommentEditor";
+import CommentList from "../components/CommentList";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ export default function PostPage() {
           <Typography variant="h5" sx={{ mb: 2 }}>
             Comments
           </Typography>
-          <CommentEditor post={post} onSubmit={() => {}}></CommentEditor>
+          <CommentList post={post}></CommentList>
         </Box>
       )}
     </Container>

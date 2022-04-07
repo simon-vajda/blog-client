@@ -7,7 +7,7 @@ import { API_URL, headers } from "../utils/ApiConfig";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function CommentEditor({ post, onSubmit }) {
+export default function CommentEditor({ post, onSuccess }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,7 +36,7 @@ export default function CommentEditor({ post, onSubmit }) {
       .then((response) => {
         setLoading(false);
         setContent("");
-        onSubmit();
+        onSuccess(response.data);
       })
       .catch((error) => {
         setLoading(false);
