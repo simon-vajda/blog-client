@@ -82,7 +82,7 @@ export default function Post({ post, preview }) {
 
   return (
     <Box>
-      <Stack sx={{ mt: 1, mb: 1, ml: 2, mr: 2 }}>
+      <Stack sx={{ mt: 1, mb: 1 }}>
         <Box display="flex" justifyContent="space-between">
           <Box>
             <Link

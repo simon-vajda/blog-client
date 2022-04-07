@@ -1,10 +1,17 @@
-import { Box, CircularProgress, Container, Fade } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Fade,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL, headers } from "../utils/ApiConfig";
 import { UserContext } from "../utils/UserContext";
 import Post from "../components/Post";
+import CommentEditor from "../components/CommentEditor";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -52,6 +59,14 @@ export default function PostPage() {
           <CircularProgress />
         </Fade>
       </Box>
+      {post && (
+        <Box mt={3}>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            Comments
+          </Typography>
+          <CommentEditor></CommentEditor>
+        </Box>
+      )}
     </Container>
   );
 }
