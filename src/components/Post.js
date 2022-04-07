@@ -88,6 +88,7 @@ export default function Post({ post, preview }) {
             <Link
               to={`/post/${post.id}`}
               variant="h4"
+              fontSize="2em"
               color="inherit"
               underline="hover"
               component={NavLink}
@@ -162,7 +163,7 @@ export default function Post({ post, preview }) {
             </Box>
           )}
         </Box>
-        <Typography fontWeight="bold" mt={1}>
+        <Typography fontWeight="bold" color="#6c6c6c" mt={1} fontStyle="italic">
           {post.author.name + " | "}
           {post.updatedOn === post.createdOn
             ? "Created on " + localDateFormat(post.createdOn)
