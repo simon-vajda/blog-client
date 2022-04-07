@@ -21,7 +21,11 @@ export default function Comment({ comment }) {
               (comment.createdOn !== comment.updatedOn ? " (edited)" : "")}
           </Typography>
         </Box>
-        <Typography textAlign="justify" sx={{ mt: 1, mb: 1 }}>
+        <Typography
+          textAlign="justify"
+          whiteSpace="pre-line"
+          sx={{ mt: 1, mb: 1 }}
+        >
           {comment.content}
         </Typography>
       </Stack>
