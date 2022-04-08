@@ -1,5 +1,6 @@
-import { Container, Stack, TextField } from "@mui/material";
+import { Button, Container, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -7,6 +8,7 @@ import { API_URL, headers } from "../utils/ApiConfig";
 import { UserContext } from "../utils/UserContext";
 import { LoadingButton } from "@mui/lab";
 import { hasEditPermission } from "../components/Post";
+import { Box } from "@mui/system";
 
 export default function PostEditor() {
   const [title, setTitle] = useState("");
@@ -17,6 +19,8 @@ export default function PostEditor() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const originUrl = id ? `/post/${id}` : "/";
 
   useEffect(() => {
     if (!currentUser) {
@@ -84,6 +88,14 @@ export default function PostEditor() {
   return (
     <Container component="main">
       <Stack spacing={2} sx={{ mt: 3 }} component="form" onSubmit={onPost}>
+        <Box mb={1}>
+          <Button
+            onClick={() => navigate(originUrl, { replace: true })}
+            startIcon={<ArrowBackIcon />}
+          >
+            {id ? "Back to the post" : "Back to home"}
+          </Button>
+        </Box>
         <TextField
           id="title"
           name="title"
