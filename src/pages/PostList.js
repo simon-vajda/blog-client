@@ -35,7 +35,7 @@ export default function PostList() {
             setPageNumber(pageNumber + 1);
           }
         },
-        { threshold: 0.8 }
+        { threshold: 0.2 }
       );
       if (postElement) observer.current.observe(postElement);
     },
