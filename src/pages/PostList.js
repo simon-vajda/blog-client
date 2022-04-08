@@ -100,24 +100,26 @@ export default function PostList() {
             );
           }
         })}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Fade
-            in={loading}
-            style={{
-              transitionDelay: loading ? "500ms" : "0ms",
-            }}
-            unmountOnExit
-          >
-            <CircularProgress />
-          </Fade>
-        </Box>
       </Stack>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 2,
+          mb: 1,
+        }}
+      >
+        <Fade
+          in={loading}
+          style={{
+            transitionDelay: loading ? "500ms" : "0ms",
+          }}
+          unmountOnExit
+        >
+          <CircularProgress />
+        </Fade>
+      </Box>
     </Container>
   );
 }
