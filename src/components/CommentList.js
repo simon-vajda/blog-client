@@ -87,6 +87,7 @@ export default function CommentList({ post }) {
                   comment={comment}
                   post={post}
                   onDelete={reloadComments}
+                  onEdit={handleCommentEdit}
                 />
               </div>
             );
